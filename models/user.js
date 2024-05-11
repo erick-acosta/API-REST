@@ -29,8 +29,6 @@ if(!user.isModified("password")) return next()
         catch(error){
             throw new Error('fallo el hash de contraseña')
         }
-
-
     })
 
     userSchema.methods.comparePassword = async function(candidatePassword){

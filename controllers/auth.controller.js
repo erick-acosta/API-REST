@@ -1,5 +1,5 @@
  import { User } from "../models/user.js"; 
- import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { generateRefreshToken, generateToken } from "../utils/tokenManager.js";
 
 
@@ -67,5 +67,20 @@ export const infoUser = async (res, req) => {
 };
 
 export const refreshToken = (req, res) =>{
+
+    const refreshToken = req.cookies.refreshToken
     
+    try{        
+        const { token, expiresIn } = generateToken(req.uid);
+        return res.json({token, expiresIn});
+
+    } catch (error){
+        return res.status(500).json({ error: "Error del servidor" });
+     }
+};
+
+export const logout =(req, res) =>{
+    res.clearCookie("refreshToken");
+    return res.json({ok: true});
 }
+
