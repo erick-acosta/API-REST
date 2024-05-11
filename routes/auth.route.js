@@ -1,7 +1,8 @@
 import express from "express";
-import { login, register } from "../controllers/auth.controller.js";
+import { infoUser, login, register } from "../controllers/auth.controller.js";
 import {body} from "express-validator";
 import {validationResultexpress} from "../middlewares/validationResult.js";
+import { requiereToken } from "../middlewares/requiereToken.js";
 const  router = express.Router();
 
 
@@ -25,6 +26,8 @@ body('password', "Minimo 6 caracteres")
     return value;
 })], 
 validationResultexpress, register );
+
+
 router.post("/login",
  [   body('email', "Email invalido")
 .trim()
@@ -37,5 +40,7 @@ body('password', "Minimo 6 caracteres")
 validationResultexpress , login );
 
 
+router.get("/protected", requiereToken, infoUser);
+router.get("/refresh", requiereToken);
 
 export default router;
